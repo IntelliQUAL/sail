@@ -47,19 +47,19 @@ namespace SAIL.Host.API.Helpers
                 // ajax and JQUERY jsonp support
                 #region jsonp
 
-                string p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX);     // JQUERY support
+                //string p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX);     // JQUERY support
 
-                if (string.IsNullOrWhiteSpace(p))
-                {
-                    p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX_2);      // ajax support
-                }
+                //if (string.IsNullOrWhiteSpace(p))
+                //{
+                    //p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX_2);      // ajax support
+                //}
 
                 #endregion
 
                 if (string.IsNullOrWhiteSpace(dataPayload))
                 {
                     // used for $.ajax, JQUERY and GET Search Criteria
-                    dataPayload = connectionHost.RequestQueryString(null);
+                    //dataPayload = connectionHost.RequestQueryString(null);
                 }
 
                 // Resolve the desired response format.
@@ -79,14 +79,14 @@ namespace SAIL.Host.API.Helpers
 
                     string responseText = string.Empty;
 
-                    if (aPIGuideHost.IsAPIGuideRequest(context))
-                    {
-                        responseText = aPIGuideHost.ReadAPIGuideResponseText(context, bp, responseFormat);
-                    }
-                    else
-                    {
+                    //if (aPIGuideHost.IsAPIGuideRequest(context))
+                    //{
+                    //    responseText = aPIGuideHost.ReadAPIGuideResponseText(context, bp, responseFormat);
+                    //}
+                    //else
+                    //{
                         responseText = bp.Execute(context, dataPayload, responseFormat);
-                    }
+                    //}
 
                     if ((connectionHost != null) && (connectionHost.ResponseSentToOutputStream))
                     {
@@ -103,10 +103,10 @@ namespace SAIL.Host.API.Helpers
 
                         // WRITE CALLBACK IF NEEDED
                         #region jsonp
-                        if (string.IsNullOrEmpty(p) == false)
-                        {
-                            responseBuilder.Append(p + "(");
-                        }
+                        //if (string.IsNullOrEmpty(p) == false)
+                        //{
+                        //    responseBuilder.Append(p + "(");
+                        //}
                         #endregion
 
                         responseBuilder.Append(responseText);
@@ -114,17 +114,17 @@ namespace SAIL.Host.API.Helpers
                         //response = CreateHttpResponseType(context);
                         response = responseBuilder.ToString();
 
-                        if (string.IsNullOrEmpty(p))
-                        {
+                        //if (string.IsNullOrEmpty(p))
+                        //{
                             response = responseBuilder.ToString();
-                        }
-                        else
-                        {
+                        //}
+                        //else
+                        //{
                             // jsonp
-                            responseBuilder.Append(");");
+                        //    responseBuilder.Append(");");
                             //response.Content = new StringContent(responseBuilder.ToString(), Encoding.UTF8, "text/javascript");
-                            response = responseBuilder.ToString();
-                        }
+                         //   response = responseBuilder.ToString();
+                        //}
                     }
                 }
                 else if (typeof(ITest).IsAssignableFrom(serviceInstance.GetType()))

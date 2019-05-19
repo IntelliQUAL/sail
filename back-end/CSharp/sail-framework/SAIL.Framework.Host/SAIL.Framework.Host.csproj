@@ -14,5 +14,6 @@
     <Folder Include="Bootstrap\" />
     <Folder Include="Enums\" />
     <Folder Include="Const\" />
+    <Folder Include="BaseClasses\" />
   </ItemGroup>
 </Project>

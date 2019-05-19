@@ -11,6 +11,9 @@
     <OutputPath>..\CompiledAssemblies\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Const\" />
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SAIL.Framework.Host\SAIL.Framework.Host.csproj" />
   </ItemGroup>
 </Project>

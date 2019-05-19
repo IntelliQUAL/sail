@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\CompiledAssemblies</OutputPath>
+    <OutputPath>..\CompiledAssemblies\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\CompiledAssemblies</OutputPath>
+    <OutputPath>..\CompiledAssemblies\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Bootstrap\" />

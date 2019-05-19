@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v2.1",
+    "signature": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v2.1": {
+      "SAIL.ViewModel/1.0.0": {
+        "dependencies": {
+          "SAIL.Framework.Host": "1.0.0"
+        },
+        "runtime": {
+          "SAIL.ViewModel.dll": {}
+        }
+      },
+      "SAIL.Framework.Host/1.0.0": {
+        "runtime": {
+          "SAIL.Framework.Host.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "SAIL.ViewModel/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SAIL.Framework.Host/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

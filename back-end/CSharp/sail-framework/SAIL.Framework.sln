@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.Framework.Host", "SAIL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.Framework.Repository", "SAIL.Framework.Repository\SAIL.Framework.Repository.csproj", "{DB665680-D21C-4CF9-A4C6-F11118F8397B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.ViewModel", "SAIL.ViewModel\SAIL.ViewModel.csproj", "{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +21,9 @@ Global
 		{DB665680-D21C-4CF9-A4C6-F11118F8397B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB665680-D21C-4CF9-A4C6-F11118F8397B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB665680-D21C-4CF9-A4C6-F11118F8397B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

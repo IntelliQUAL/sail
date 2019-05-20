@@ -98,7 +98,7 @@ function vastInitialize(document, successFunction, failureFunction) {
 
 function vastNew(vastInfo, successFunction, failureFunction) {
 
-    var url = GetDefaultHost() + '/v7/json/IQ.BUS.Vast.Entities/new/?' + buildStandardParams(vastInfo);
+    var url = GetDefaultHost() + '/json/iq.bus.vast/entities/new/?' + buildStandardParams(vastInfo);
 
     $.ajax({
         url: url,
@@ -119,7 +119,7 @@ function vastRead(vastInfo, successFunction, failureFunction) {
 
     vastInfo.actionType = "Read";
 
-    var url = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.Entities/" + vastInfo.primaryKeyValue + "/?" + buildStandardParams(vastInfo);
+    var url = GetDefaultHost() + "/json/iq.bus.vast/entities/" + vastInfo.primaryKeyValue + "/?" + buildStandardParams(vastInfo);
 
     $.ajax({
         url: url,
@@ -142,7 +142,7 @@ function vastDelete(vastInfo, successFunction, failureFunction) {
 
     vastInfo.actionType = "Delete";
 
-    var url = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.Entities/" + vastInfo.primaryKeyValue + "/?cors-method=DELETE&" + buildStandardParams(vastInfo);
+    var url = GetDefaultHost() + "/json/iq.bus.vast/entities/" + vastInfo.primaryKeyValue + "/?cors-method=DELETE&" + buildStandardParams(vastInfo);
 
     $.ajax({
         url: url,
@@ -157,7 +157,7 @@ function vastSearch(vastInfo, successFunction, failureFunction) {
 
     vastInfo.actionType = "Search";
 
-    var url = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.Entities/?" + buildStandardParams(vastInfo);
+    var url = GetDefaultHost() + "/json/iq.bus.vast/entities/?" + buildStandardParams(vastInfo);
 
     if (vastInfo.searchCriteria != null) {
         var jsonString = JSON.stringify(vastInfo.searchCriteria);
@@ -295,7 +295,7 @@ function vastAuthenticateUser(userName, password, vastInfo, successFunction, fai
         Username: userName
     };
 
-    var url = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.AuthenticateUser/?" + buildStandardParams(vastInfo);
+    var url = GetDefaultHost() + "/json/iq.bus.vast/AuthenticateUser/?" + buildStandardParams(vastInfo);
 
     var requestJson = JSON.stringify(authRequest);
 
@@ -349,7 +349,7 @@ function vastInitCreateAccount(vastInfo, successFunction, failureFunction) {
 
 	vastInfo.actionType = "New";
 	
-    var url = GetDefaultHost() + '/v7/json/IQ.BUS.Vast.Accounts/new/?' + buildStandardParams(vastInfo);
+    var url = GetDefaultHost() + '/json/iq.bus.vast/Accounts/new/?' + buildStandardParams(vastInfo);
 
     $.ajax({
         url: url,
@@ -392,7 +392,7 @@ function vastCreateAccount(vastInfo, newAccountEntity, successFunction, failureF
 function vastReadAccount(vastInfo, successFunction, failureFunction) {
     
     if (isNullOrWhiteSpace(vastInfo.authToken)) {
-        var url = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.Accounts/" + vastInfo.accountCode + "/?" + buildStandardParams(vastInfo);
+        var url = GetDefaultHost() + "/json/iq.bus.vast/Accounts/" + vastInfo.accountCode + "/?" + buildStandardParams(vastInfo);
 
         $.ajax({
             url: url,
@@ -507,10 +507,10 @@ function vastSaveFieldInternal(vastInfo, fieldIdToUpdate, newValue, transactionI
         vastInfo.customOperationList = '';
     }
         
-    var fullUrl = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.Entities/?cors-method=" + httpMethod + "&" + buildStandardParams(vastInfo) + "&" + dataToSend;
+    var fullUrl = GetDefaultHost() + "/json/iq.bus.vast/entities/?cors-method=" + httpMethod + "&" + buildStandardParams(vastInfo) + "&" + dataToSend;
 
     if (vastInfo.customDataPipeline == CREATE_ACCOUNT_CREATE) {
-        fullUrl = GetDefaultHost() + "/v7/json/IQ.BUS.Vast.Accounts/?cors-method=" + httpMethod + "&" + buildStandardParams(vastInfo) + "&" + dataToSend;
+        fullUrl = GetDefaultHost() + "/json/iq.bus.vast/entities/?cors-method=" + httpMethod + "&" + buildStandardParams(vastInfo) + "&" + dataToSend;
     }
 
     $.ajax({

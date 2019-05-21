@@ -184,6 +184,20 @@ namespace SAIL.Framework.Host.Bootstrap
             return result;
         }
 
+        R IContext.Payload<R>()
+        {
+            R result = default(R);
+
+            object value = ((IContext)this).Get<R>();
+
+            if (value != null)
+            {
+                result = (R)Convert.ChangeType(value, typeof(R));
+            }
+
+            return result;
+        }
+
         ConcurrentDictionary<string, object> IContext.Collection
         {
             get

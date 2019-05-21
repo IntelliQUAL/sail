@@ -16,7 +16,10 @@ namespace SAIL.Framework.Host.Bootstrap
         private static IConfiguration _hostConfiguration = null;
         private static IExceptionHandler _exceptionHandler = null;
         private static IRequestHelper _requestHelper = null;
+        private static IResponseHelper _responseHelper = null;
         //private static IFileIO _fileIo = null;
+        private static IMD5 _md5 = null;
+        private static ITrace _trace = null; 
 
         [ThreadStatic]
         private static IContext _threadContext = null;
@@ -58,19 +61,67 @@ namespace SAIL.Framework.Host.Bootstrap
             return context;
         }
 
+        internal static FlowTransport<object> BuildDefaultServiceContext(IConnectionHost connectionHost, IBusinessProcess businessProcess)
+        {
+            FlowTransport<object> flowTransport = new FlowTransport<object>(null);
+
+            IContext context = flowTransport;
+
+            context.Set(connectionHost);
+            context.Set(businessProcess);
+
+            return flowTransport;
+        }
+
+        internal static IMD5 Md5
+        {
+            get
+            {
+                if (_md5 == null)
+                {
+                    IContext context = new FlowTransport<object>(null);
+
+                    _md5 = (IMD5)LoadCrossCuttingConcern(context, "MD5", "SAIL.Infrastructure.Crypto.MD5");
+                }
+
+                return _md5;
+            }
+
+        }
+
         /// <summary>
         /// Created:        06/15/2017
         /// Author:         David J. McKee
         /// Purpose:        Returns an implementation of the IRequestHelper
         /// </summary>
-        public static IRequestHelper RequestHelper(IContext context)
+        internal static IRequestHelper RequestHelper(IContext context)
         {
             if (_requestHelper == null)
             {
-                _requestHelper = (IRequestHelper)LoadCrossCuttingConcern(context, "RequestHelper", "PIPE.Infrastructure.DataFormats.RequestHelper");
+                _requestHelper = (IRequestHelper)LoadCrossCuttingConcern(context, "RequestHelper", "SAIL.Infrastructure.TypeConversion.RequestHelper");
             }
 
             return _requestHelper;
+        }
+
+        internal static IResponseHelper ResponseHelper(IContext context)
+        {
+            if (_responseHelper == null)
+            {
+                _responseHelper = (IResponseHelper)LoadCrossCuttingConcern(context, "ResponseHelper", "SAIL.Infrastructure.TypeConversion.ResponseHelper");
+            }
+
+            return _responseHelper;
+        }
+
+        internal static ITrace Trace(IContext context)
+        {
+            if (_trace == null)
+            {
+                _trace = (ITrace)LoadCrossCuttingConcern(context, "Trace", typeof(DefaultTracer).FullName);
+            }
+
+            return _trace;
         }
 
         /// <summary>
@@ -78,7 +129,7 @@ namespace SAIL.Framework.Host.Bootstrap
         /// Author:         David J. McKee
         /// Purpose:        Returns an implementation of the IExceptionHandler
         /// </summary>
-        public static IExceptionHandler ExceptionHandler(IContext context)
+        internal static IExceptionHandler ExceptionHandler(IContext context)
         {
             if (_exceptionHandler == null)
             {

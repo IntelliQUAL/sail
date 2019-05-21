@@ -29,5 +29,7 @@ namespace SAIL.Framework.Host
 
         // Reads the entire context as a dictionary.
         ConcurrentDictionary<string, object> Collection { get; }
+
+        R Payload<R>();
     }
 }

@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\..\..\..\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\netcoreapp2.1</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\..\..\..\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\netcoreapp2.1</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="SAIL.Framework.Host">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Host.dll</HintPath>
+    </Reference>
+    <Reference Include="SAIL.ViewModel">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.ViewModel.dll</HintPath>
+    </Reference>
+    <Reference Include="SAIL.Framework.Repository">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Repository.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Const\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IQ.ViewModel.Vast\IQ.ViewModel.Vast.csproj" />
+    <ProjectReference Include="..\IQ.BUS.Vast.Common\IQ.BUS.Vast.Common.csproj" />
+  </ItemGroup>
+</Project>

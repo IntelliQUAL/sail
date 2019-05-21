@@ -1,10 +1,8 @@
 ﻿using System;
 namespace SAIL.Framework.Host
 {
-    public class IMD5
+    internal interface IMD5
     {
-        public IMD5()
-        {
-        }
+        string ComputeHash(string input);
     }
 }

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace SAIL.Framework.Host
 {
-    public class IStringCrypt
+    public interface IStringCrypt
     {
-        public IStringCrypt()
-        {
-        }
+        string Encrypt(string unencrypted);
+        string Decrypt(string encrypted);
     }
 }

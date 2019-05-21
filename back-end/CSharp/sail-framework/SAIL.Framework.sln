@@ -5,7 +5,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.Framework.Host", "SAIL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.Framework.Repository", "SAIL.Framework.Repository\SAIL.Framework.Repository.csproj", "{DB665680-D21C-4CF9-A4C6-F11118F8397B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.ViewModel", "SAIL.ViewModel\SAIL.ViewModel.csproj", "{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.DataModel", "SAIL.DataModel\SAIL.DataModel.csproj", "{0B96028F-1A5E-413D-A038-8E8F1C40DCEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAIL.ViewModel.SqlEsque", "SAIL.ViewModel.SqlEsque\SAIL.ViewModel.SqlEsque.csproj", "{63044B32-E21F-42C6-A4E4-B21E5B98BF86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,9 +23,13 @@ Global
 		{DB665680-D21C-4CF9-A4C6-F11118F8397B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB665680-D21C-4CF9-A4C6-F11118F8397B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB665680-D21C-4CF9-A4C6-F11118F8397B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79D0A725-E412-4EDF-AAF0-F3BDD1F2132A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B96028F-1A5E-413D-A038-8E8F1C40DCEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B96028F-1A5E-413D-A038-8E8F1C40DCEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B96028F-1A5E-413D-A038-8E8F1C40DCEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B96028F-1A5E-413D-A038-8E8F1C40DCEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63044B32-E21F-42C6-A4E4-B21E5B98BF86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63044B32-E21F-42C6-A4E4-B21E5B98BF86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63044B32-E21F-42C6-A4E4-B21E5B98BF86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63044B32-E21F-42C6-A4E4-B21E5B98BF86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

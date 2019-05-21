@@ -1,3 +1,8 @@
 .DS_Store
 .vs/
 [Dd]ebug/
+*.suo
+*.user
+bin
+obj
+packages

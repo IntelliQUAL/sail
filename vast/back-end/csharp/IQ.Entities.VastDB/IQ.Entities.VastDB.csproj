@@ -4,4 +4,16 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Const\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IQ.Entities.VastMetaDB\IQ.Entities.VastMetaDB.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SAIL.Framework.Host">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Host.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

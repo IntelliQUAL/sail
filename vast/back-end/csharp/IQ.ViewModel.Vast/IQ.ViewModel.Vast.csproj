@@ -4,4 +4,16 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Enums\" />
+    <Folder Include="Const\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="SAIL.ViewModel.SqlEsque">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.ViewModel.SqlEsque.dll</HintPath>
+    </Reference>
+    <Reference Include="SAIL.Framework.Host">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Host.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

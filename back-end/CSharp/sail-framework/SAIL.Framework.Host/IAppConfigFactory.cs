@@ -1,10 +1,8 @@
 ﻿using System;
 namespace SAIL.Framework.Host
 {
-    public class IAppConfigFactory
+    public interface IAppConfigFactory
     {
-        public IAppConfigFactory()
-        {
-        }
+        IAppConfig GetAppConfig(string appCode);
     }
 }

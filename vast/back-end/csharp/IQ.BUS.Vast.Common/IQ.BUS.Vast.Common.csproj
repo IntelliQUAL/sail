@@ -12,6 +12,9 @@
     <Reference Include="SAIL.Framework.Host">
       <HintPath>..\..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Host.dll</HintPath>
     </Reference>
+    <Reference Include="SAIL.Framework.Host">
+      <HintPath>..\..\..\..\back-end\CSharp\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Host.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IQ.Entities.VastDB\IQ.Entities.VastDB.csproj" />

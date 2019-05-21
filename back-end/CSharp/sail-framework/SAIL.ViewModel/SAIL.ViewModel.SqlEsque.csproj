@@ -16,4 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SAIL.Framework.Host\SAIL.Framework.Host.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BaseClasses\" />
+  </ItemGroup>
 </Project>

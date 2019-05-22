@@ -3,22 +3,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-/*
- * using PIPE.Framework.MVC;
-using IQ.BUS.Vast.Helpers;
-using PIPE.Framework.Security;
-using IQ.Entities.VastDB.Const;
-using IQ.BUS.Vast.Common.Helpers;
-using PIPE.Framework.AssemblyLine;
-using PIPE.Framework.Configuration;
-using PIPE.Framework.HostInterfaces;
-using PIPE.Framework.Security.Models;
-using PIPE.Framework.ExceptionHandling;
-using PIPE.Framework.Tracing;
-*/
+
+using SAIL.Framework.Host;
+using SAIL.Framework.Host.Bootstrap;
 
 using IQ.ViewModel.Vast;
-
+using IQ.BUS.Vast.Helpers;
+using IQ.Entities.VastDB.Const;
+using IQ.BUS.Vast.Common.Types;
+using IQ.BUS.Vast.Common.Helpers;
+using IQ.BUS.VAST.AuthenticationProviders;
 
 namespace IQ.BUS.Vast
 {
@@ -55,8 +49,8 @@ namespace IQ.BUS.Vast
                 // Create a new Context to access the Master catalog
                 context.SetByName(IQ.Entities.VastDB.Const.Context.INSTANCE_GUID, instanceGUID);
                 context.SetByName(IQ.Entities.VastDB.Const.Context.INSTANCE_STATUS, request.AccountStatus);
-                context.SetByName(IQ.Entities.VastDB.Const.Context.DATABASE_ID, Databases.CAT_GUID_MASTER);
-                context.SetByName(IQ.Entities.VastDB.Const.Context.TABLE_ID, Tables.TABLE_GUID_SYS_LOGIN);
+                context.SetByName(IQ.Entities.VastDB.Const.Context.DATABASE_ID, IQ.Entities.VastDB.Const.Databases.CAT_GUID_MASTER);
+                context.SetByName(IQ.Entities.VastDB.Const.Context.TABLE_ID, IQ.Entities.VastDB.Const.Tables.TABLE_GUID_SYS_LOGIN);
                 context.SetByName(IQ.Entities.VastDB.Const.Context.DOMAIN_NAME, request.DomainName);
 
                 // Authenticate the user using the domain specific authentication provider.
@@ -71,7 +65,7 @@ namespace IQ.BUS.Vast
                     userCredentials.Password = request.Password;
                     userCredentials.AccountCode = request.AccountCode;
 
-                    authResponse.Result.Success = authenticationProvider.AuthenticateUser(context, userCredentials, out authenticationToken);
+                    authResponse.Result.Success = authenticationProvider.AuthenticateCredentials(context, userCredentials, authenticationToken);
                 }
 
                 // Append Module / Database Access List
@@ -108,7 +102,7 @@ namespace IQ.BUS.Vast
             }
             catch (System.Exception ex)
             {
-                context.Get<IServiceExceptionHandler>().HandleException(context, authResponse, ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
             finally
             {
@@ -121,18 +115,18 @@ namespace IQ.BUS.Vast
                         authFailTrace.Append("AuthenticateUser Failed for request.DomainName: " + request.DomainName +
                                                 ", request.AccountCode: " + request.AccountCode +
                                                 ", request.AccountStatus: " + request.AccountStatus +
-                                                ", DB: " + Databases.CAT_GUID_MASTER +
-                                                ", Table: " + Tables.TABLE_GUID_SYS_LOGIN +
+                                                ", DB: " + IQ.Entities.VastDB.Const.Databases.CAT_GUID_MASTER +
+                                                ", Table: " + IQ.Entities.VastDB.Const.Tables.TABLE_GUID_SYS_LOGIN +
                                                 ", request.DomainName: " + request.DomainName +
                                                 ", request.Username: " + request.Username +
                                                 ", request.Password: " + request.Password +
                                                 ", request.AccountCode: " + request.AccountCode);
 
-                        context.Get<ITraceEmit>().QueueTraceWrite(System.Diagnostics.TraceLevel.Warning, authFailTrace.ToString());
+                        context.Get<ITrace>().Emit(System.Diagnostics.TraceLevel.Warning, authFailTrace.ToString());
                     }
                     catch (System.Exception ex2)
                     {
-                        context.Get<IServiceExceptionHandler>().HandleException(context, authResponse, ex2);
+                        context.Get<IExceptionHandler>().HandleException(context, ex2);
                     }
                 }
             }
@@ -155,23 +149,23 @@ namespace IQ.BUS.Vast
                 sysLoginDatabaseSearchCriteria.RowsPerPage = 100;
 
                 IOperation<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse> searchRepo =
-                    context.Get<IServiceLocator>().LocateByName<IOperation<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse>>("IQ.OPS.Search.SearchRepo");
+                    context.Get<IServiceLocator>().LocateByName<IOperation<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse>>(context, "IQ.OPS.Search.SearchRepo");
 
                 FlowTransport<IQ.Entities.VastDB.EntitySearch> searchContext = new FlowTransport<IQ.Entities.VastDB.EntitySearch>(sysLoginDatabaseSearchCriteria, context);
 
-                searchContext[IQ.Entities.VastDB.Const.Context.TABLE_ID] = Tables.IQ_CLOUD_TABLE_ID_ACCOUNT;
+                searchContext[IQ.Entities.VastDB.Const.Context.TABLE_ID] = IQ.Entities.VastDB.Const.Tables.IQ_CLOUD_TABLE_ID_ACCOUNT;
 
                 string domainName = searchContext[IQ.Entities.VastDB.Const.Context.DOMAIN_NAME].ToString();
 
                 IQ.Entities.VastDB.SearchResponse accountSearchResponse = new IQ.Entities.VastDB.SearchResponse();
 
-                sysLoginDatabaseSearchCriteria.TableID = Tables.IQ_CLOUD_TABLE_ID_ACCOUNT;
+                sysLoginDatabaseSearchCriteria.TableID = IQ.Entities.VastDB.Const.Tables.IQ_CLOUD_TABLE_ID_ACCOUNT;
 
-                searchContext[IQ.Entities.VastDB.Const.Context.DATABASE_ID] = Databases.IQ_CLOUD_DATABASE_GUID;
+                searchContext[IQ.Entities.VastDB.Const.Context.DATABASE_ID] = IQ.Entities.VastDB.Const.Databases.IQ_CLOUD_DATABASE_GUID;
 
                 searchContext[IQ.Entities.VastDB.Const.Context.INTERFACE_STANDARD_TABLE] = RepoAuthProvider.LoadAuthenticationRepo(context, domainName);
 
-                searchRepo.Execute(searchContext, ref accountSearchResponse);
+                searchRepo.Execute(searchContext, null, ref accountSearchResponse);
 
                 foreach (string[] sysLoginDatabase in accountSearchResponse.RowList)
                 {
@@ -188,7 +182,7 @@ namespace IQ.BUS.Vast
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
         }
 
@@ -232,7 +226,7 @@ namespace IQ.BUS.Vast
             }
             catch (System.Exception ex2)
             {
-                context.Get<IServiceExceptionHandler>().HandleException(context, authResponse, ex2);
+                context.Get<IExceptionHandler>().HandleException(context, ex2);
             }
         }
 
@@ -248,11 +242,11 @@ namespace IQ.BUS.Vast
 
                 string authenticationProviderName = appConfig.ReadSetting(KEY_AUTHENTICATION_PROVIDER_PREFIX + domainName, typeof(RepoAuthProvider).FullName);
 
-                authenticationProvider = context.Get<IServiceLocator>().LocateByName<IAuthenticationProvider>(authenticationProviderName);
+                authenticationProvider = context.Get<IServiceLocator>().LocateByName<IAuthenticationProvider>(context, authenticationProviderName);
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
 
             return authenticationProvider;
@@ -396,7 +390,7 @@ namespace IQ.BUS.Vast
         /// Purpose:        Ensures that a DefaultTableID, DefaultActionType
         /// Assumptions:    We are only dealing with one row at one time. sysLoginDatabase is the highest priority.
         /// </summary>        
-        private static void SetDefaultTableAndActionType(IContext context, SearchResponse databaseList,
+        private static void SetDefaultTableAndActionType(IContext context, IQ.Entities.VastDB.SearchResponse databaseList,
                                                             string defaultTableIdSysLoginDatabase, string defaultActionTypeSysLoginDatabase)
         {
             try
@@ -448,7 +442,7 @@ namespace IQ.BUS.Vast
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
         }
 

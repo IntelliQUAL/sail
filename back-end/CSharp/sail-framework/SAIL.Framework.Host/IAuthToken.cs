@@ -10,5 +10,6 @@ namespace SAIL.Framework.Host
     {
         bool Load(IContext context);        // Loads the token from the context.
         string Read(IContext context);      // Reads the token as a string.
+        void SetClaim(string claimType, string claimValue);
     }
 }

@@ -23,6 +23,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Const\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="AuthenticationProviders\" />
+    <Folder Include="BaseClasses\" />
+    <Folder Include="AssemblyLines\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\IQ.ViewModel.Vast\IQ.ViewModel.Vast.csproj" />

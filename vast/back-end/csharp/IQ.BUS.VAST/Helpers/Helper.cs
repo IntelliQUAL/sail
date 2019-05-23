@@ -51,27 +51,27 @@ namespace IQ.BUS.VAST.Helpers
                 switch (actionName)
                 {
                     case Actions.ACTION_NEW:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> newAssemblyLine = new IQ.BUS.Vast.New();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> newAssemblyLine = new IQ.BUS.VAST.AssemblyLines.New();
                         entityResponse = newAssemblyLine.Execute(context);
                         break;
 
                     case Actions.ACTION_CREATE:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> create = new IQ.BUS.Vast.Create();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> create = new IQ.BUS.VAST.AssemblyLines.Create();
                         entityResponse = create.Execute(context);
                         break;
 
                     case Actions.ACTION_READ:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> read = new IQ.BUS.Vast.Read();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> read = new IQ.BUS.VAST.AssemblyLines.Read();
                         entityResponse = read.Execute(context);
                         break;
 
                     case Actions.ACTION_UPDATE:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> update = new IQ.BUS.Vast.Update();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> update = new IQ.BUS.VAST.AssemblyLines.Update();
                         entityResponse = update.Execute(context);
                         break;
 
                     case Actions.ACTION_DELETE:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> delete = new IQ.BUS.Vast.Delete();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> delete = new IQ.BUS.VAST.AssemblyLines.Delete();
                         entityResponse = delete.Execute(context);
                         break;
 
@@ -82,7 +82,7 @@ namespace IQ.BUS.VAST.Helpers
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
 
             return entityResponse;
@@ -99,27 +99,27 @@ namespace IQ.BUS.VAST.Helpers
                 switch (actionName)
                 {
                     case Actions.ACTION_NEW:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> newAssemblyLine = new IQ.BUS.Vast.New();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> newAssemblyLine = new IQ.BUS.VAST.AssemblyLines.New();
                         entityResponse = newAssemblyLine.Execute(context);
                         break;
 
                     case Actions.ACTION_CREATE:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> create = new IQ.BUS.Vast.Create();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> create = new IQ.BUS.VAST.AssemblyLines.Create();
                         entityResponse = create.Execute(context);
                         break;
 
                     case Actions.ACTION_READ:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> read = new IQ.BUS.Vast.Read();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> read = new IQ.BUS.VAST.AssemblyLines.Read();
                         entityResponse = read.Execute(context);
                         break;
 
                     case Actions.ACTION_UPDATE:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> update = new IQ.BUS.Vast.Update();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> update = new IQ.BUS.VAST.AssemblyLines.Update();
                         entityResponse = update.Execute(context);
                         break;
 
                     case Actions.ACTION_DELETE:
-                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> delete = new IQ.BUS.Vast.Delete();
+                        IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> delete = new IQ.BUS.VAST.AssemblyLines.Delete();
                         entityResponse = delete.Execute(context);
                         break;
 
@@ -130,7 +130,7 @@ namespace IQ.BUS.VAST.Helpers
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
 
             return entityResponse;
@@ -174,7 +174,7 @@ namespace IQ.BUS.VAST.Helpers
 
                     case Actions.ACTION_SEARCH:
                         IAssemblyLine<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse> searchAssemblyLine = new
-                            IQ.BUS.Vast.Search();
+                            IQ.BUS.VAST.AssemblyLines.Search();
                         searchResponse = searchAssemblyLine.Execute(context);
                         break;
 
@@ -182,7 +182,7 @@ namespace IQ.BUS.VAST.Helpers
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
 
             return searchResponse;

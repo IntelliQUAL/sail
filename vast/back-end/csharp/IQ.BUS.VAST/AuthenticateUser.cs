@@ -279,7 +279,7 @@ namespace IQ.BUS.Vast
                 sysLoginDatabaseSearchCriteria.OrderBy.SortOrder = IQ.Entities.VastMetaDB.Enums.SortOrder.Desc;
 
                 IOperation<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse> searchRepo =
-                    context.Get<IServiceLocator>().LocateByName<IOperation<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse>>("IQ.OPS.Search.SearchRepo");
+                    context.Get<IServiceLocator>().LocateByName<IOperation<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse>>(context, "IQ.OPS.Search.SearchRepo");
 
                 FlowTransport<IQ.Entities.VastDB.EntitySearch> searchContext = new FlowTransport<IQ.Entities.VastDB.EntitySearch>(sysLoginDatabaseSearchCriteria, context);
 
@@ -293,7 +293,7 @@ namespace IQ.BUS.Vast
 
                 searchContext[IQ.Entities.VastDB.Const.Context.DATABASE_ID] = Databases.CAT_GUID_MASTER;
 
-                searchRepo.Execute(searchContext, ref sysLoginDatabaseList);
+                searchRepo.Execute(searchContext, null, ref sysLoginDatabaseList);
 
                 // Find all Databases the user can access.
                 // Filter for only databases the user can access.
@@ -324,7 +324,7 @@ namespace IQ.BUS.Vast
 
                         databaseList = new IQ.Entities.VastDB.SearchResponse();
 
-                        searchRepo.Execute(searchContext, ref databaseList);
+                        searchRepo.Execute(searchContext, null, ref databaseList);
 
                         SetDefaultTableAndActionType(context, databaseList, defaultTableIdSysLoginDatabase, defaultActionTypeSysLoginDatabase);
 
@@ -349,7 +349,7 @@ namespace IQ.BUS.Vast
 
                         searchContext = new FlowTransport<IQ.Entities.VastDB.EntitySearch>(sysDatabaseSearchCriteria, searchContext);
 
-                        searchRepo.Execute(searchContext, ref singleDb);
+                        searchRepo.Execute(searchContext, null, ref singleDb);
 
                         SetDefaultTableAndActionType(context, singleDb, defaultTableIdSysLoginDatabase, defaultActionTypeSysLoginDatabase);
 
@@ -380,7 +380,7 @@ namespace IQ.BUS.Vast
             }
             catch (System.Exception ex)
             {
-                context.Get<IExceptionHandler>().HandleException(ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
         }
 

@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using SAIL.Framework.Host;
 using SAIL.Framework.Host.Bootstrap;
 
-using IQ.Entities.VastDB;
 using IQ.BUS.Vast.Common;
+using IQ.Entities.VastDB;
 using IQ.BUS.Vast.Helpers;
 using IQ.Entities.VastDB.Const;
 
@@ -17,9 +17,9 @@ namespace IQ.BUS.VAST.AssemblyLines
     /// <summary>
     /// Created:        03/03/2015
     /// Author:         David J. McKee
-    /// Purpose:        Allows for retrieving all data required to input a new record via the user interface
+    /// Purpose:        Allows for deleting an existing record
     /// </summary>
-    internal class New : IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity>
+    public class Delete : IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity>
     {
         IQ.Entities.VastDB.Entity IAssemblyLine<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity>.Execute(FlowTransport<IQ.Entities.VastDB.Entity> context)
         {
@@ -40,26 +40,31 @@ namespace IQ.BUS.VAST.AssemblyLines
             {
                 context[typeof(IQ.BUS.Vast.Helpers.HelperFactory).FullName] = new IQ.BUS.Vast.Helpers.HelperFactory();
 
-                CommonConcerns.InitAssemblyLineContext(context, Actions.ACTION_NEW, out instanceGuid, out moduleId, out customAssemblyLineName, out transactionId, out operationNameList);
+                CommonConcerns.InitAssemblyLineContext(context, Actions.ACTION_DELETE, out instanceGuid, out moduleId, out customAssemblyLineName, out transactionId, out operationNameList);
 
-                IQ.BUS.Vast.Common.Helpers.EventLogHelper.EnterAssemblyLine(context, this.GetType(), transactionId, instanceGuid, moduleId, context.Payload.TableID, Actions.ACTION_NEW, startTime,
+                IQ.BUS.Vast.Common.Helpers.EventLogHelper.EnterAssemblyLine(context, this.GetType(), transactionId, instanceGuid, moduleId, context.Payload.TableID, Actions.ACTION_DELETE, startTime,
                                                                                 context.Payload, response, customAssemblyLineName);
 
-                response.Table = new IQ.Entities.VastMetaDB.Table();
-                response.Table.ID = context.Payload.TableID;
+                if (context.Payload.Table == null)
+                {
+                    context.Payload.Table = new IQ.Entities.VastMetaDB.Table();
+                    context.Payload.Table.ID = context.Payload.TableID;
+                }
 
-                CommonConcerns.InitRequestAndResponse(context.Payload.TableID, Actions.ACTION_NEW, context.Payload, response);
+                CommonConcerns.InitRequestAndResponse(context.Payload.TableID, Actions.ACTION_DELETE, context.Payload, response);
 
                 // Append all root schema values to the Request table
                 string databaseName = context[IQ.Entities.VastDB.Const.Context.DATABASE_ID].ToString();
-                MetaDataHelper.AppendTableMetaData(context, databaseName, response.Table, IQ.Entities.VastDB.Const.Actions.ACTION_NEW);
+                MetaDataHelper.AppendTableMetaData(context, databaseName, context.Payload.Table, IQ.Entities.VastDB.Const.Actions.ACTION_DELETE);
 
                 // Build the default operation list is code. This may be overridden via configuration.
                 List<Operation<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity>> operationList = new List<Operation<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity>>();
 
                 AssemblyLineHelper<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity> assemblyLineHelper = new AssemblyLineHelper<IQ.Entities.VastDB.Entity, IQ.Entities.VastDB.Entity>();
 
-                assemblyLineHelper.LoadOperations(context, response.Table, IQ.Entities.VastDB.Const.Actions.ACTION_NEW, ref useTableAssemblyLine, ref useCustomAssemblyLine, ref useOperationList, ref operationList);
+                useCustomAssemblyLine = assemblyLineHelper.UseCustomAssemblyName(context, operationList);
+
+                assemblyLineHelper.LoadOperations(context, response.Table, IQ.Entities.VastDB.Const.Actions.ACTION_DELETE, ref useTableAssemblyLine, ref useCustomAssemblyLine, ref useOperationList, ref operationList);
 
                 if (useOperationList)
                 {
@@ -68,12 +73,11 @@ namespace IQ.BUS.VAST.AssemblyLines
                     context["IOperationConfigFactory"] = requestDataOperationConfigFactory;
                 }
 
-                // Execute the Assembly Line                
-                assemblyLineHelper.ExecuteAssemblyLine(context, ref response, operationList, transactionId, instanceGuid, databaseName, response.Table.ID,
-                                                        IQ.Entities.VastDB.Const.Actions.ACTION_NEW, useTableAssemblyLine, useCustomAssemblyLine,
-                                                        customAssemblyLineName, response.Table.ColumnVisibilityInstanceGUID, response.Table.ColumnVisibilityDatabaseName,
-                                                        response.Table.ColumnVisibilityTableName, response.Table.TableSchemaInstanceGUID,
-                                                        response.Table.TableSchemaDatabaseName, response.Table.TableSchemaTableName);
+                assemblyLineHelper.ExecuteAssemblyLine(context, ref response, operationList, transactionId, instanceGuid, databaseName, context.Payload.Table.ID,
+                                                        IQ.Entities.VastDB.Const.Actions.ACTION_DELETE, useTableAssemblyLine, useCustomAssemblyLine,
+                                                        customAssemblyLineName, context.Payload.Table.ColumnVisibilityInstanceGUID, context.Payload.Table.ColumnVisibilityDatabaseName,
+                                                        context.Payload.Table.ColumnVisibilityTableName, context.Payload.Table.TableSchemaInstanceGUID,
+                                                        context.Payload.Table.TableSchemaDatabaseName, context.Payload.Table.TableSchemaTableName);
             }
             catch (System.Exception ex)
             {
@@ -81,10 +85,10 @@ namespace IQ.BUS.VAST.AssemblyLines
             }
             finally
             {
-                IQ.BUS.Vast.Common.Helpers.EventLogHelper.ExitAssemblyLine(context, this.GetType(), transactionId, instanceGuid, moduleId, response.Table.ID, IQ.Entities.VastDB.Const.Actions.ACTION_NEW,
+                IQ.BUS.Vast.Common.Helpers.EventLogHelper.ExitAssemblyLine(context, this.GetType(), transactionId, instanceGuid, moduleId, context.Payload.Table.ID, IQ.Entities.VastDB.Const.Actions.ACTION_DELETE,
                                                                             startTime, DateTime.Now, context.Payload, response, useTableAssemblyLine, useCustomAssemblyLine, customAssemblyLineName,
-                                                                            response.Table.ColumnVisibilityInstanceGUID, response.Table.ColumnVisibilityDatabaseName, response.Table.ColumnVisibilityTableName,
-                                                                            response.Table.TableSchemaInstanceGUID, response.Table.TableSchemaDatabaseName, response.Table.TableSchemaTableName);
+                                                                            context.Payload.Table.ColumnVisibilityInstanceGUID, context.Payload.Table.ColumnVisibilityDatabaseName, context.Payload.Table.ColumnVisibilityTableName,
+                                                                            context.Payload.Table.TableSchemaInstanceGUID, context.Payload.Table.TableSchemaDatabaseName, context.Payload.Table.TableSchemaTableName);
             }
 
             return response;

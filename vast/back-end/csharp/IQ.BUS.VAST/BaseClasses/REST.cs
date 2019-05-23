@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 
 using SAIL.Framework.Host;
+using SAIL.Framework.Host.Enums;
+using SAIL.Framework.Host.Bootstrap;
 using SAIL.Framework.Host.BaseClasses;
 
 using IQ.BUS.Vast.Helpers;
@@ -361,7 +363,7 @@ namespace IQ.BUS.Vast.BaseClasses
                     string formId = GetFormID(context, _connectionHost, result);
 
                     result = ExecuteBasicAction(context, sysLoginId, accountCode, moduleId, formId, actionType, string.Empty, logSetting,
-                                                new IQ.BUS.Vast.New(), ref _connectionHost);
+                                                new IQ.BUS.VAST.AssemblyLines.New(), ref _connectionHost);
                 }
                 else
                 {
@@ -375,7 +377,7 @@ namespace IQ.BUS.Vast.BaseClasses
             }
             catch (System.Exception ex)
             {
-                context.Get<IServiceExceptionHandler>().HandleException(context, result, ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
 
             return result;
@@ -405,7 +407,7 @@ namespace IQ.BUS.Vast.BaseClasses
                     string formId = GetFormID(context, _connectionHost, result);
 
                     result = ExecuteCreateOrUpdate(context, sysLoginId, accountCode, moduleId, formId, _connectionHost, request, actionType, logSetting,
-                                                    new IQ.BUS.Vast.Create());
+                                                    new IQ.BUS.VAST.AssemblyLines.Create());
 
                     if (string.IsNullOrWhiteSpace(result.AuthToken))
                     {
@@ -455,7 +457,7 @@ namespace IQ.BUS.Vast.BaseClasses
                     string formId = GetFormID(context, _connectionHost, result);
 
                     result = ExecuteBasicAction(context, sysLoginId, accountCode, moduleId, formId, actionType, id, logSetting,
-                                                new IQ.BUS.Vast.Read(), ref _connectionHost);
+                                                new IQ.BUS.VAST.AssemblyLines.Read(), ref _connectionHost);
 
                     result.AuthToken = authToken;
                 }
@@ -500,7 +502,7 @@ namespace IQ.BUS.Vast.BaseClasses
 
                     result = ExecuteCreateOrUpdate(context,
                                                     sysLoginId, accountCode, moduleId, formId, _connectionHost, request, actionType, logSetting,
-                                                    new IQ.BUS.Vast.Update());
+                                                    new IQ.BUS.VAST.AssemblyLines.Update());
 
                     result.AuthToken = authToken;
                 }
@@ -552,7 +554,7 @@ namespace IQ.BUS.Vast.BaseClasses
                         string formId = GetFormID(context, _connectionHost, result);
 
                         result = ExecuteBasicAction(context, sysLoginId, accountCode, moduleId, formId, actionType, id, logSetting,
-                                                    new IQ.BUS.Vast.Delete(), ref _connectionHost);
+                                                    new IQ.BUS.VAST.AssemblyLines.Delete(), ref _connectionHost);
                     }
                     else
                     {
@@ -672,9 +674,9 @@ namespace IQ.BUS.Vast.BaseClasses
                 {
                     string encodedData = AuthHelper.DecryptAuth(context, authToken);
 
-                    PIPE.Framework.FileSystem.ICsvIo csvIo = context.Get<PIPE.Framework.FileSystem.ICsvIo>();
+                    ICsvIO csvIo = context.Get<ICsvIO>();
 
-                    string[] columnPositionMap = new string[] { Columns.COL_GUID_PASSWORD_HASH, IQ.BUS.Vast.Consts.Params.AUTH_TOKEN_TIMEOUT, Columns.COL_GUID_SYS_LOGIN_ID, Columns.COL_GUID_LOG_SETTING };
+                    string[] columnPositionMap = new string[] { Columns.COL_GUID_PASSWORD_HASH, IQ.BUS.Vast.Common.Consts.Params.AUTH_TOKEN_TIMEOUT, Columns.COL_GUID_SYS_LOGIN_ID, Columns.COL_GUID_LOG_SETTING };
 
                     Dictionary<string, string> data = csvIo.ParseCsvLineSingle(encodedData, columnPositionMap);
 
@@ -706,8 +708,8 @@ namespace IQ.BUS.Vast.BaseClasses
                                                 string logSetting,
                                                 string actionType)
         {
-            accountCode = IQ.BUS.Vast.Helpers.AuthHelper.RemoveDuplicat(accountCode);
-            moduleId = IQ.BUS.Vast.Helpers.AuthHelper.RemoveDuplicat(moduleId);
+            accountCode = IQ.BUS.Vast.Common.Helpers.AuthHelper.RemoveDuplicat(accountCode);
+            moduleId = IQ.BUS.Vast.Common.Helpers.AuthHelper.RemoveDuplicat(moduleId);
 
             IConnectionHost connectionHost = context.Get<IConnectionHost>();
 
@@ -816,7 +818,7 @@ namespace IQ.BUS.Vast.BaseClasses
                 IQ.BUS.Vast.Common.SearchHelper.ViewModelEntitySearchFromDbEntity(context, sysLoginId, formId, request, dataModelEntity);
 
                 // Create a new Instance of the Assembly Line
-                IAssemblyLine<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse> newAssemblyLine = new IQ.BUS.Vast.Search();
+                IAssemblyLine<IQ.Entities.VastDB.EntitySearch, IQ.Entities.VastDB.SearchResponse> newAssemblyLine = new IQ.BUS.VAST.AssemblyLines.Search();
 
                 // Create the Assembly Line Context
                 FlowTransport<IQ.Entities.VastDB.EntitySearch> alContext = new FlowTransport<IQ.Entities.VastDB.EntitySearch>(dataModelEntity, context);
@@ -829,7 +831,7 @@ namespace IQ.BUS.Vast.BaseClasses
             }
             catch (System.Exception ex)
             {
-                context.Get<IServiceExceptionHandler>().HandleException(context, response, ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
             finally
             {
@@ -1034,7 +1036,7 @@ namespace IQ.BUS.Vast.BaseClasses
             }
             catch (System.Exception ex)
             {
-                context.Get<IServiceExceptionHandler>().HandleException(context, response, ex);
+                context.Get<IExceptionHandler>().HandleException(context, ex);
             }
             finally
             {
@@ -1072,7 +1074,7 @@ namespace IQ.BUS.Vast.BaseClasses
                                     Columns.COL_GUID_LOG_SETTING + ": " + logSetting;
                 //Columns.COL_GUID_TRANSACTION_ID + ": " + transactionId;
 
-                context.Get<PIPE.Framework.Tracing.ITraceEmit>().QueueTraceWrite(System.Diagnostics.TraceLevel.Info, message);
+                context.Get<ITrace>().Emit(System.Diagnostics.TraceLevel.Info, message);
             }
             catch (System.Exception ex)
             {
@@ -1116,7 +1118,7 @@ namespace IQ.BUS.Vast.BaseClasses
 
                                     "Total Time: " + totalTime.TotalMilliseconds + "ms";
 
-                context.Get<PIPE.Framework.Tracing.ITraceEmit>().QueueTraceWrite(System.Diagnostics.TraceLevel.Info, message);
+                context.Get<ITrace>().Emit(System.Diagnostics.TraceLevel.Info, message);
             }
             catch (System.Exception ex)
             {
@@ -1161,7 +1163,7 @@ namespace IQ.BUS.Vast.BaseClasses
 
             string iqSessionId = BuildIqSession(context);
 
-            ISessionManager sessionManager = context.Get<IServiceLocator>().Locate<ISessionManager>(iqSessionId);
+            ISessionManager sessionManager = context.Get<IServiceLocator>().Locate<ISessionManager>(context, iqSessionId);
 
             string entityJson = sessionManager.ReadSessionValue(immediateSubmissionDataKey, string.Empty);
 
@@ -1173,7 +1175,7 @@ namespace IQ.BUS.Vast.BaseClasses
             }
             else
             {
-                baseEntity = (ViewModel.Vast.Entity)context.Get<IRequestHelper>().StringToObject(typeof(ViewModel.Vast.Entity), entityJson, PIPE.Framework.HostInterfaces.Enums.ResponseFormat.JSON);
+                baseEntity = (ViewModel.Vast.Entity)context.Get<IRequestHelper>().StringToObject<ViewModel.Vast.Entity>(entityJson, ResponseFormat.JSON);
             }
 
             foreach (var columnGroup in request.FieldGroupList)
@@ -1191,7 +1193,7 @@ namespace IQ.BUS.Vast.BaseClasses
                 baseEntity.CustomAssemblyLineName = context.GetByName(Context.CUSTOM_ASSEMBLY_LINE_NAME).ToString();
             }
 
-            entityJson = context.Get<IResponseHelper>().ObjectToString(baseEntity, Enums.ResponseFormat.JSON);
+            entityJson = context.Get<IResponseHelper>().ObjectToString(baseEntity, ResponseFormat.JSON);
 
             // Buffer the data based on the transaction id.
             sessionManager.WriteSessionValue(immediateSubmissionDataKey, entityJson);
@@ -1208,7 +1210,7 @@ namespace IQ.BUS.Vast.BaseClasses
 
             string iqSessionId = BuildIqSession(context);
 
-            ISessionManager sessionManager = context.Get<IServiceLocator>().Locate<ISessionManager>(iqSessionId);
+            ISessionManager sessionManager = context.Get<IServiceLocator>().Locate<ISessionManager>(context, iqSessionId);
 
             string entityJson = sessionManager.ReadSessionValue(immediateSubmissionDataKey, string.Empty);
 
@@ -1216,7 +1218,7 @@ namespace IQ.BUS.Vast.BaseClasses
 
             if (string.IsNullOrWhiteSpace(entityJson) == false)
             {
-                baseEntity = (ViewModel.Vast.Entity)context.Get<IRequestHelper>().StringToObject(typeof(ViewModel.Vast.Entity), entityJson, PIPE.Framework.HostInterfaces.Enums.ResponseFormat.JSON);
+                baseEntity = (ViewModel.Vast.Entity)context.Get<IRequestHelper>().StringToObject<ViewModel.Vast.Entity>(entityJson, ResponseFormat.JSON);
             }
 
             if (baseEntity != null)

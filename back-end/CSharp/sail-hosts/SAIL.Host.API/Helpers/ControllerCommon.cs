@@ -47,19 +47,19 @@ namespace SAIL.Host.API.Helpers
                 // ajax and JQUERY jsonp support
                 #region jsonp
 
-                //string p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX);     // JQUERY support
+                string p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX);     // JQUERY support
 
-                //if (string.IsNullOrWhiteSpace(p))
-                //{
-                    //p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX_2);      // ajax support
-                //}
+                if (string.IsNullOrWhiteSpace(p))
+                {
+                    p = connectionHost.RequestAny(Commands.HTTP_PADDING_PREFIX_2);      // ajax support
+                }
 
                 #endregion
 
                 if (string.IsNullOrWhiteSpace(dataPayload))
                 {
                     // used for $.ajax, JQUERY and GET Search Criteria
-                    //dataPayload = connectionHost.RequestQueryString(null);
+                    dataPayload = connectionHost.RequestQueryString(null);
                 }
 
                 // Resolve the desired response format.
@@ -73,20 +73,20 @@ namespace SAIL.Host.API.Helpers
                 }
 
                 // Execute the business process
-                if (typeof(IService).IsAssignableFrom(serviceInstance.GetType()))
-                {
+                //if (typeof(IService).IsAssignableFrom(serviceInstance.GetType()))
+                //{
                     IService bp = (IService)serviceInstance;
 
                     string responseText = string.Empty;
 
-                    //if (aPIGuideHost.IsAPIGuideRequest(context))
-                    //{
-                    //    responseText = aPIGuideHost.ReadAPIGuideResponseText(context, bp, responseFormat);
-                    //}
-                    //else
-                    //{
-                        responseText = bp.Execute(context, dataPayload, responseFormat);
-                    //}
+                    if (aPIGuideHost.IsAPIGuideRequest(context))
+                    {
+                        response = aPIGuideHost.ReadAPIGuideResponseText(context, bp, responseFormat);
+                    }
+                    else
+                    {
+                        response = bp.Execute(context, dataPayload, responseFormat);
+                    }
 
                     if ((connectionHost != null) && (connectionHost.ResponseSentToOutputStream))
                     {
@@ -114,27 +114,26 @@ namespace SAIL.Host.API.Helpers
                         //response = CreateHttpResponseType(context);
                         response = responseBuilder.ToString();
 
-                        //if (string.IsNullOrEmpty(p))
-                        //{
+                        if (string.IsNullOrEmpty(p))
+                        {
                             response = responseBuilder.ToString();
-                        //}
-                        //else
-                        //{
+                        }
+                        else
+                        {
                             // jsonp
-                        //    responseBuilder.Append(");");
-                            //response.Content = new StringContent(responseBuilder.ToString(), Encoding.UTF8, "text/javascript");
-                         //   response = responseBuilder.ToString();
-                        //}
+                            responseBuilder.Append(");");
+                            response = responseBuilder.ToString();
+                        }
                     }
-                }
-                else if (typeof(ITest).IsAssignableFrom(serviceInstance.GetType()))
-                {
-                    ITest bp = (ITest)serviceInstance;
-                    TestResult testResult = bp.ExecuteTest(context, responseFormat);
-                    string responseText = testResult.ToString();
-                    response = string.Empty; // new HttpResponseMessage(HttpStatusCode.OK);
-                    response = responseText;
-                }
+                //}
+                //else if (typeof(ITest).IsAssignableFrom(serviceInstance.GetType()))
+                //{
+                 //   ITest bp = (ITest)serviceInstance;
+                  //  TestResult testResult = bp.ExecuteTest(context, responseFormat);
+                   // string responseText = testResult.ToString();
+                    //response = string.Empty; // new HttpResponseMessage(HttpStatusCode.OK);
+                   // response = responseText;
+                //}
             }
             catch (System.Exception ex)
             {

@@ -84,35 +84,17 @@ namespace SAIL.Host.API.Controllers
         /// </summary>
         private string ExecuteBusinessProcess(string responseFormatAsText, string module, string service, string entity, string dataPayload)
         {
-            IConnectionHost connectionHost = null;
-
-            //const string MS_HTTP_CONTEXT = "MS_HttpContext";
-            //const string OWIN_CONTEXT = "MS_OwinContext";
-
-            /*
-            if (Request.Properties.ContainsKey(MS_HTTP_CONTEXT))
-            {
-                connectionHost = new ConnectionHost((HttpContextWrapper)Request.Properties[MS_HTTP_CONTEXT]);
-            }
-            else if (Request.Properties.ContainsKey(OWIN_CONTEXT))
-            {
-                //connectionHost = new ConnectionHost((OwinContext)Request.Properties[OWIN_CONTEXT]);
-            }
-            */
-
-            IHostConfig hostConfiguration = new HostConfiguration();
+            IConnectionHost connectionHost = new ConnectionHost(Request.HttpContext); 
+            IHostConfig hostConfiguration = new SAIL.Host.API.Helpers.HostConfiguration();
             IBinding binder = new Binder();
             IContext context = CrossCuttingConcerns.BuildDefaultServiceContext(connectionHost, binder, hostConfiguration);
 
             string serviceName = BuildServiceName(context, module, service);
 
-            /*
             const string MAP_RESOURCE_TO_PREFIX = "MapResource";
 
             serviceName = context.Get<IHostConfig>().ReadSetting(MAP_RESOURCE_TO_PREFIX + serviceName, serviceName);
-            */
            
-            /*
             if (string.IsNullOrWhiteSpace(entity))
             {
                 const string USE_SERVICE_AS_ENTITY_NAME = "UseServiceAsEntityName";
@@ -129,7 +111,6 @@ namespace SAIL.Host.API.Controllers
             {
                 context.SetByName(SAIL.Framework.Repository.Const.Context.TABLE_OR_COLLECTION_NAME, entity);
             }
-            */
 
             string httpResponseMessage = ControllerCommon.ExecuteService(context, responseFormatAsText, serviceName, dataPayload, connectionHost);
 

@@ -81,7 +81,7 @@ namespace SAIL.Framework.Host.Bootstrap
                 {
                     IContext context = new FlowTransport<object>(null);
 
-                    _md5 = (IMD5)LoadCrossCuttingConcern(context, "MD5", "SAIL.Infrastructure.Crypto.MD5");
+                    _md5 = (IMD5)LoadCrossCuttingConcern(context, "MD5", typeof(DefaultMD5Handler).FullName);
                 }
 
                 return _md5;

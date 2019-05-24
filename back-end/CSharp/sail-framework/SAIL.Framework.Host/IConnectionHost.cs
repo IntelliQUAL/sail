@@ -22,7 +22,7 @@ namespace SAIL.Framework.Host
         void WriteSecureSessionCookie(string name, string value);
         string ReadSecureSessionCookie(string name, string defaultValue);
         Dictionary<string, string> Cookies { get; }
-        //List<IFile> RequestFiles { get; }
+        List<IFile> RequestFiles { get; }
         string HttpMethod { get; }                                          // GET or POST
         Dictionary<string, string> Headers { get; }                         // All headers
         Dictionary<string, string> Form { get; }                            // All form values

@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\..\..\..\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\netcoreapp2.1</OutputPath>
+    <OutputPath>..\..\..\..\back-end\CSharp\sail-hosts\SAIL.Host.API\Users\mckeedj\Documents\projects\IntelliQUAL\sail\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\..\..\..\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\netcoreapp2.1</OutputPath>
+    <OutputPath>..\..\..\..\back-end\CSharp\sail-hosts\SAIL.Host.API\Users\mckeedj\Documents\projects\IntelliQUAL\sail\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SAIL.Framework.Host">

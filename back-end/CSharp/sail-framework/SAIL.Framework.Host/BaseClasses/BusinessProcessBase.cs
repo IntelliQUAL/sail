@@ -22,7 +22,7 @@ namespace SAIL.Framework.Host.BaseClasses
     /// <typeparam name="I">Input data type</typeparam>
     /// <typeparam name="O">Output data type</typeparam>
     /// MarshalByRefObject Required to load in another appDomain 
-    public abstract class BusinessProcessBase<I, O> : MarshalByRefObject, IBusinessProcess, IConnectionContext, IProtectedMemory
+    public abstract class BusinessProcessBase<I, O> : MarshalByRefObject, IBusinessProcess, IConnectionContext, IProtectedMemory, IService
     {
         private const int APP_DOMAIN_REFRESH_MINUTES = 10;
 
@@ -59,100 +59,9 @@ namespace SAIL.Framework.Host.BaseClasses
 
         string IBusinessProcess.Execute(string dataPayload, ResponseFormat responseFormat)
         {
-            _responseFormat = responseFormat;
-
-            string responseString = string.Empty;
-
             IContext context = CrossCuttingConcerns.BuildDefaultServiceContext(_connectionHost, this);
 
-            if (string.IsNullOrWhiteSpace(dataPayload) == false)
-            {
-                try
-                {
-                    _requestHash = CrossCuttingConcerns.Md5.ComputeHash(dataPayload);
-
-                    O responseObject = default(O);
-
-                    I request = (I)CrossCuttingConcerns.RequestHelper(context).StringToObject<I>(dataPayload, responseFormat);
-
-                    if (request != null)
-                    {
-                        responseObject = ProcessRequest(request);
-                        responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(responseObject, responseFormat);
-                    }
-                    else
-                    {
-                        responseString = PromptInvalidRequest(responseFormat, responseString, null);
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    responseString = PromptInvalidRequest(responseFormat, responseString, ex);
-                }
-            }
-            else
-            {
-                const string QUERY_STRING_EXAMPLE = "e";
-                const string EXAMPLE_REQUEST = "ExampleRequest";
-                const string EXAMPLE_RESPONSE = "ExampleResponse";
-                const string WSDL = "WSDL";
-                const string WSDL_TYPED = "WsdlWithTypes";
-                const string XSD = "XSD";
-
-                if (_connectionHost != null)
-                {
-                    string example = _connectionHost.RequestQueryString(QUERY_STRING_EXAMPLE);
-
-                    if (string.IsNullOrEmpty(example))
-                    {
-                        I request;
-
-                        //AK 11/28/2014 - Support for passing in no querystring value (for request objects that have no inputs).
-                        O responseObject = default(O);
-
-                        if (TypeConversion.IsObjectOnlyQueryString<I>(context, out request))
-                        {
-                            responseObject = ProcessRequest(request);
-                            responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(responseObject, responseFormat);
-                        }
-                        else
-                        {
-                            request = (I)Activator.CreateInstance(typeof(I));
-
-                            responseObject = ProcessRequest(request);
-                            responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(responseObject, responseFormat);
-                            //responseString = PromptInvalidRequest(responseFormat, responseString, null);
-                        }
-                    }
-                    else
-                    {
-                        switch (example)
-                        {
-                            case EXAMPLE_REQUEST:
-                                responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(this.ExampleRequest, responseFormat);
-                                break;
-
-                            case EXAMPLE_RESPONSE:
-                                responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(this.ExampleResponse, responseFormat);
-                                break;
-
-                            case WSDL:
-                                //responseString = CrossCuttingConcerns.ResponseHelper(context).GenerateWsdl(this, this, this.ExampleRequest, this.ExampleResponse);
-                                break;
-
-                            case WSDL_TYPED:
-                                //responseString = CrossCuttingConcerns.ResponseHelper(context).GenerateWsdlTypes(this, this, this.ExampleRequest, this.ExampleResponse);
-                                break;
-
-                            case XSD:
-                                //responseString = CrossCuttingConcerns.ResponseHelper(context).GenerateXsd(this, this, this.ExampleRequest, this.ExampleResponse);
-                                break;
-                        }
-                    }
-                }
-            }
-
-            return RemoveDataContractNamespace(responseString);
+            return ((IService)this).Execute(context, dataPayload, responseFormat);
         }
 
         private string PromptInvalidRequest(ResponseFormat responseFormat, string responseString, System.Exception ex)
@@ -253,6 +162,104 @@ namespace SAIL.Framework.Host.BaseClasses
             }
 
             return processArguments;
+        }
+
+        string IService.Execute(IContext context, string dataPayload, ResponseFormat responseFormat)
+        {
+            _responseFormat = responseFormat;
+
+            string responseString = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(dataPayload) == false)
+            {
+                try
+                {
+                    //IMD5 md5 = CrossCuttingConcerns.Md5;
+
+                    //_requestHash = md5.ComputeHash(dataPayload);
+
+                    O responseObject = default(O);
+
+                    I request = (I)CrossCuttingConcerns.RequestHelper(context).StringToObject<I>(dataPayload, responseFormat);
+
+                    if (request != null)
+                    {
+                        responseObject = ProcessRequest(request);
+                        responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(responseObject, responseFormat);
+                    }
+                    else
+                    {
+                        responseString = PromptInvalidRequest(responseFormat, responseString, null);
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    responseString = PromptInvalidRequest(responseFormat, responseString, ex);
+                }
+            }
+            else
+            {
+                const string QUERY_STRING_EXAMPLE = "e";
+                const string EXAMPLE_REQUEST = "ExampleRequest";
+                const string EXAMPLE_RESPONSE = "ExampleResponse";
+                const string WSDL = "WSDL";
+                const string WSDL_TYPED = "WsdlWithTypes";
+                const string XSD = "XSD";
+
+                if (_connectionHost != null)
+                {
+                    string example = _connectionHost.RequestQueryString(QUERY_STRING_EXAMPLE);
+
+                    if (string.IsNullOrEmpty(example))
+                    {
+                        I request;
+
+                        //AK 11/28/2014 - Support for passing in no querystring value (for request objects that have no inputs).
+                        O responseObject = default(O);
+
+                        if (TypeConversion.IsObjectOnlyQueryString<I>(context, out request))
+                        {
+                            responseObject = ProcessRequest(request);
+                            responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(responseObject, responseFormat);
+                        }
+                        else
+                        {
+                            request = (I)Activator.CreateInstance(typeof(I));
+
+                            responseObject = ProcessRequest(request);
+                            responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(responseObject, responseFormat);
+                            //responseString = PromptInvalidRequest(responseFormat, responseString, null);
+                        }
+                    }
+                    else
+                    {
+                        switch (example)
+                        {
+                            case EXAMPLE_REQUEST:
+                                responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(this.ExampleRequest, responseFormat);
+                                break;
+
+                            case EXAMPLE_RESPONSE:
+                                responseString = CrossCuttingConcerns.ResponseHelper(context).ObjectToString(this.ExampleResponse, responseFormat);
+                                break;
+
+                            case WSDL:
+                                //responseString = CrossCuttingConcerns.ResponseHelper(context).GenerateWsdl(this, this, this.ExampleRequest, this.ExampleResponse);
+                                break;
+
+                            case WSDL_TYPED:
+                                //responseString = CrossCuttingConcerns.ResponseHelper(context).GenerateWsdlTypes(this, this, this.ExampleRequest, this.ExampleResponse);
+                                break;
+
+                            case XSD:
+                                //responseString = CrossCuttingConcerns.ResponseHelper(context).GenerateXsd(this, this, this.ExampleRequest, this.ExampleResponse);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            return RemoveDataContractNamespace(responseString);
         }
 
         string IProtectedMemory.ProcessFileName

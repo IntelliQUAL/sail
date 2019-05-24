@@ -13,7 +13,7 @@ namespace SAIL.Framework.Host
         void LoadXml(string xmlPayload);
         void LoadJson(string jsonPayload);
         void LoadPayload(IPayload payload);
-        void LoadXmlDocument(XmlDocument xmlDocument);
+        //void LoadXmlDocument(XmlDocument xmlDocument);
 
         // Read full graph
         string Xml { get; }
@@ -24,7 +24,7 @@ namespace SAIL.Framework.Host
         IPayload this[int index] { get; }
         IPayload this[string name] { get; }
         string Val { get; set; }            // InnerText or ToString() of the core entity
-        System.Xml.XmlNode XmlNode { get; }
+        //System.Xml.XmlNode XmlNode { get; }
 
         // Append
         IPayload AppendChildAttribute(string attributeName, string attributeValue);

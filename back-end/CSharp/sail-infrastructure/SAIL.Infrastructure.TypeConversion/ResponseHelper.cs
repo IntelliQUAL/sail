@@ -4,8 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 using SAIL.Framework.Host;
 using SAIL.Framework.Host.Enums;
 
@@ -26,7 +24,9 @@ namespace SAIL.Infrastructure.TypeConversion
                     }
                     else
                     {
+                        /*
                         response = JsonConvert.SerializeObject(any);
+                        */                      
                     }
                     break;
 

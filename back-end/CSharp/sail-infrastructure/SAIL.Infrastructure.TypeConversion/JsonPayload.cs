@@ -4,25 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-
-using Newtonsoft.Json.Linq;
+using System.Runtime.Serialization;
 
 using SAIL.Framework.Host;
 
 namespace SAIL.Infrastructure.TypeConversion
 {
     class JsonPayload : IPayload
-    {
-        JObject _jsonObject = null;
-        JToken _jToken = null;
+    { 
+        //JObject _jsonObject = null;
+        //JToken _jToken = null;
         bool _isRoot = false;
-        JArray _jArray = null;
+        //JArray _jArray = null;
 
         public JsonPayload(string json)
         {
             ((IPayload)this).LoadJson(json);
         }
 
+        /*
         public JsonPayload(JToken json)
         {
             _jToken = json;
@@ -34,6 +34,7 @@ namespace SAIL.Infrastructure.TypeConversion
             _jsonObject = json;
             _isRoot = isRoot;
         }
+        */
 
         IPayload IPayload.this[string name]
         {
@@ -41,6 +42,7 @@ namespace SAIL.Infrastructure.TypeConversion
             {
                 IPayload result = null;
 
+                /*
                 if (_jsonObject != null)
                 {
                     JToken child = _jsonObject[name];
@@ -84,6 +86,7 @@ namespace SAIL.Infrastructure.TypeConversion
                         }                    
                     }
                 }
+                */
 
                 return result;
             }
@@ -103,6 +106,7 @@ namespace SAIL.Infrastructure.TypeConversion
             {
                 List<IPayload> result = new List<IPayload>();
 
+                /*
                 if (_jToken != null)
                 {
                     if (_jToken.Type == JTokenType.Object)
@@ -157,6 +161,7 @@ namespace SAIL.Infrastructure.TypeConversion
                         result.Add(new JsonPayload(child));
                     }
                 }
+                */
 
                 return result;
             }
@@ -168,6 +173,7 @@ namespace SAIL.Infrastructure.TypeConversion
             {
                 string json = string.Empty;
 
+                /*
                 if (_jsonObject != null)
                 {
                     json = _jsonObject.ToString();
@@ -176,6 +182,7 @@ namespace SAIL.Infrastructure.TypeConversion
                 {
                     json = _jToken.ToString();
                 }
+                */
 
                 return json;
             }
@@ -195,6 +202,7 @@ namespace SAIL.Infrastructure.TypeConversion
             {
                 string localName = string.Empty;
 
+                /*
                 if (_jToken != null)
                 {
                     if (_jToken.Type == JTokenType.Property)
@@ -220,6 +228,7 @@ namespace SAIL.Infrastructure.TypeConversion
                         }
                     }
                 }
+                */
 
                 return localName;
             }
@@ -239,6 +248,7 @@ namespace SAIL.Infrastructure.TypeConversion
             {
                 string result = null;
 
+                /*
                 if (_jToken != null)
                 {
                     if (_jToken.Type == JTokenType.Property)
@@ -289,7 +299,8 @@ namespace SAIL.Infrastructure.TypeConversion
                         }
                     }
                 }
-
+                */
+              
                 return result;
             }
 
@@ -324,6 +335,7 @@ namespace SAIL.Infrastructure.TypeConversion
 
         IPayload IPayload.AppendChildElement(string elementName)
         {
+            /*
             JProperty newProperty = new JProperty(elementName);
 
             if (_jsonObject == null)
@@ -334,12 +346,15 @@ namespace SAIL.Infrastructure.TypeConversion
             _jsonObject.Add(newProperty);
 
             JObject child = new JObject(newProperty);
+            */
 
-            return new JsonPayload(child);
+            //return new JsonPayload(child);
+            return null;
         }
 
         IPayload IPayload.AppendChildElement(string elementName, dynamic innerText)
         {
+            /*
             JProperty newProperty = new JProperty(elementName, innerText);
 
             if (_jsonObject == null)
@@ -350,8 +365,10 @@ namespace SAIL.Infrastructure.TypeConversion
             _jsonObject.Add(newProperty);
 
             JObject child = new JObject(newProperty);
+            */
 
-            return new JsonPayload(child);
+            //return new JsonPayload(child);
+            return null;
         }
 
         IPayload IPayload.AppendChildElement(string elementName, dynamic innerText, string namespaceUri)
@@ -378,11 +395,11 @@ namespace SAIL.Infrastructure.TypeConversion
         {
             if (jsonPayload.StartsWith("["))
             {
-                _jArray = JArray.Parse(jsonPayload);
+                //_jArray = JArray.Parse(jsonPayload);
             }
             else
             {
-                _jsonObject = JObject.Parse(jsonPayload);
+                //_jsonObject = JObject.Parse(jsonPayload);
             }
 
             _isRoot = true;

@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using Newtonsoft.Json;
-
 using SAIL.Framework.Host;
 
 namespace SAIL.Infrastructure.TypeConversion
@@ -371,15 +369,16 @@ namespace SAIL.Infrastructure.TypeConversion
                 string json = string.Empty;
 
                 // convert from Xml to json                
-                json = JsonConvert.SerializeXmlNode(_node);
+                //json = JsonConvert.SerializeXmlNode(_node);
 
+                /*
                 if (json.Contains("\"root\":{"))
                 {
                     json = json.Replace("\"root\":{", string.Empty);
                     json = json.Trim();
                     json = json.Substring(0, json.Length - 1);
                 }
-
+                */
                 return json;
             }
         }

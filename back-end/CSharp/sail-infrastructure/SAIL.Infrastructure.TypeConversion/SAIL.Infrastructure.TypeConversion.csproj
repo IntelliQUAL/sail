@@ -5,14 +5,17 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\CompiledAssemblies</OutputPath>
+    <OutputPath>..\..\sail-hosts\SAIL.Host.API\Users\mckeedj\Documents\projects\IntelliQUAL\sail\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\CompiledAssemblies</OutputPath>
+    <OutputPath>..\..\sail-hosts\SAIL.Host.API\Users\mckeedj\Documents\projects\IntelliQUAL\sail\back-end\CSharp\sail-hosts\SAIL.Host.API\bin\Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="SAIL.Framework.Host">
       <HintPath>..\..\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Host.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 </Project>

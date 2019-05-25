@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,9 @@
     </Reference>
     <Reference Include="SAIL.Framework.Repository">
       <HintPath>..\..\sail-framework\CompiledAssemblies\netcoreapp2.1\SAIL.Framework.Repository.dll</HintPath>
+    </Reference>
+    <Reference Include="SAIL.Infrastructure.TypeConversion">
+      <HintPath>..\..\sail-infrastructure\CompiledAssemblies\netcoreapp2.1\SAIL.Infrastructure.TypeConversion.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

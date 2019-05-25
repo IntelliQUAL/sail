@@ -14,7 +14,7 @@ namespace SAIL.Infrastructure.TypeConversion
     { 
         //JObject _jsonObject = null;
         //JToken _jToken = null;
-        bool _isRoot = false;
+        //bool _isRoot = false;
         //JArray _jArray = null;
 
         public JsonPayload(string json)
@@ -402,7 +402,7 @@ namespace SAIL.Infrastructure.TypeConversion
                 //_jsonObject = JObject.Parse(jsonPayload);
             }
 
-            _isRoot = true;
+            //_isRoot = true;
         }
 
         void IPayload.LoadPayload(IPayload payload)

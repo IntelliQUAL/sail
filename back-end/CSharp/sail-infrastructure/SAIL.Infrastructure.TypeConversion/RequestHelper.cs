@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using SAIL.Framework.Host;
 using SAIL.Framework.Host.Enums;
 
+using Newtonsoft.Json;
+
 namespace SAIL.Infrastructure.TypeConversion
 {
     class RequestHelper : IRequestHelper
@@ -23,10 +25,8 @@ namespace SAIL.Infrastructure.TypeConversion
                         response = dataPayload;
                     }
                     else
-                    {
-                        /*
+                    { 
                         response = JsonConvert.DeserializeObject<T>(dataPayload);
-                        */
                     }
                     break;
 

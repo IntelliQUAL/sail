@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HostConfig>
+  <Setting>
+    <Key>ServicePathList</Key>
+    <Value>/Users/mckeedj/Documents/projects/IntelliQUAL/sacredmystical.church/csharp/deployment/netcoreapp2.1</Value>
+    <Description>This contains a pipe delimited list of search paths</Description>
+  </Setting>  
+</HostConfig>
